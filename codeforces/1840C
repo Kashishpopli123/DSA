@@ -1,0 +1,44 @@
+# include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+    int n,k,q;
+    cin>>n>>k>>q;
+    vector<long long> arr(n);
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    long long count = 0;
+    vector<long long> info;
+    for(int i=0;i<n;i++){
+        if(arr[i] <= q){
+            count++;            
+        } else{
+            if(count >= k){
+                info.push_back(count);
+                count = 0;
+            }
+            count = 0;
+        }
+    }
+    if(count >= k){
+        info.push_back(count);
+    }
+    long long ans = 0;
+    for(int i=0;i<info.size();i++){
+       long long number = (info[i] - k + 1);
+       ans = ans + (long long)(number)*(number + 1)/2;
+       
+    }
+    // cout<<endl;
+    // for(auto &it : info){
+    //     cout<<it<<" ";
+    // }
+    // cout<<endl;
+    cout<<ans<<endl;
+    
+    }
+ 
+}
