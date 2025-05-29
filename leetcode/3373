@@ -1,0 +1,65 @@
+class Solution {
+private:
+void dfs(int source,int color,vector<int> &op,vector<vector<int>> &adj,int &total,vector<int> &visited){
+if(color == 0) total++;
+op[source] = color;  
+visited[source] = 1;
+for(auto &it : adj[source]){
+    if(!visited[it]){
+        dfs(it,1-color,op,adj,total,visited);
+    }
+}
+}
+public:
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2) {
+        int n = edges1.size() + 1;
+        int m = edges2.size() + 1;
+        vector<vector<int>> adj1(n);
+        for(auto &it : edges1){
+            int u = it[0];
+            int v = it[1];
+            adj1[u].push_back(v);
+            adj1[v].push_back(u);
+        }
+        vector<vector<int>> adj2(m);
+        for(auto &it : edges2){
+            int u = it[0];
+            int v = it[1];
+            adj2[u].push_back(v);
+            adj2[v].push_back(u);
+        }
+        vector<int> dummy(n);
+        vector<int> visited(n,0);
+        int count_zero = 0;
+        dfs(0,0,dummy,adj1,count_zero,visited);
+        vector<int> even(n);
+        for(int i=0;i<n;i++){
+            if(dummy[i] == 0){
+                even[i] = count_zero;
+            } else{
+                even[i] = n - count_zero;
+            }
+        }
+        int count_zero_second = 0;
+        vector<int> dummy2(m,-1);
+        vector<int> odd(m,-1);
+        vector<int> visited1(m,0);
+        dfs(0,0,dummy2,adj2,count_zero_second,visited1);
+        for(int i=0;i<m;i++){
+            if(dummy2[i] == 0){
+                odd[i] = m - count_zero_second;
+            } else{
+                odd[i] = count_zero_second;
+            }
+        }
+        int maxi = INT_MIN;
+        for(int i=0;i<m;i++){
+            maxi = max(maxi,odd[i]);
+        }
+        for(int i=0;i<n;i++){
+            even[i] = even[i] + maxi;
+        }
+        return even;
+      
+    }
+};  
